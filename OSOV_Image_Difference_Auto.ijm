@@ -3,7 +3,7 @@ var SAMPLE_TYPE_LEAF = "Leaf";
 
 var sampleType;
 
-macro "OSOV Image Difference v2 Auto" {
+macro "OSOV Image Difference Auto" {
 
 	getSettings();
 
