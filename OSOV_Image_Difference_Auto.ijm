@@ -21,9 +21,7 @@ macro "OSOV Image Difference Auto" {
 	run("Make Substack...", " slices=2-"+ slices);
 	imgID2 = getImageID();
 
-	run("Duplicate...", " slices=1-"+ slices-1);
-
-
+	
 	if(sampleType == SAMPLE_TYPE_STEM) {
 		imageCalculator("Subtract create stack", imgID2, imgID1);
 	} else {
@@ -31,9 +29,13 @@ macro "OSOV Image Difference Auto" {
 	}
 	selectImage(imgID1);
 	close();
+	run("Duplicate...", "duplicate");
+	run("Threshold...");
 
 	selectImage(imgID2);
 	close();
+
+	
 
 	setBatchMode("exit and display");
 }
