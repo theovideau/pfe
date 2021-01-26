@@ -1,0 +1,11 @@
+The following files completes the OSOV plugin and needs it to work.
+
+Install:
+
+Fist you need to install OSOV plugin.
+
+Then, put OSOV_Image_Difference_Auto.ijm into Fiji/plugins/OSOV/
+
+And put OSOV Toolbox.ijm into Fiji/macros/toolsets/
+
+Then restart Fiji and you will find the Image Difference Auto tool in the OSOV toolbox.
