@@ -2,7 +2,7 @@ The following files completes the OSOV plugin and needs it to work.
 
 Install:
 
-Fist you need to install OSOV plugin.
+First you need to install OSOV plugin.
 
 Then, put OSOV_Image_Difference_Auto.ijm into Fiji/plugins/OSOV/
 
