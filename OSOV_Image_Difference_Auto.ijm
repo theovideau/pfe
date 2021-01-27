@@ -4,11 +4,20 @@ macro "OSOV Image Difference Auto" {
     run("Duplicate...", "duplicate");
     run("Convert to Mask");
     run("Synchronize Windows");
-	
-	bool = isKeyDown("space");
-	while(!bool){
-		bool = isKeyDown("space");
-	}
-	run("Remove Outliers...");
+	run("Threshold...");
+
+    while(!isKeyDown("space")){}
+    
+    run("Remove Outliers...");
+	run("Tiff...");
+	run("Set Measurements...");
+	run("Set Scale...");
+	run("Threshold...");
+
+	run("OSOV Measure Stack"); 
+	saveAs("Results");
+
+
+
+
 }
-	
