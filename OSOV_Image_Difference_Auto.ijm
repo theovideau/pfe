@@ -10,14 +10,10 @@ macro "OSOV Image Difference Auto" {
     
     run("Remove Outliers...");
 	run("Tiff...");
-	run("Set Measurements...");
-	run("Set Scale...");
+	run("Set Measurements...", "area limit redirect=None decimal=3");
+	run("Set Scale...", "distance=1 known=1 pixel=1 unit=cm");
 	run("Threshold...");
 
 	run("OSOV Measure Stack"); 
 	saveAs("Results");
-
-
-
-
 }
