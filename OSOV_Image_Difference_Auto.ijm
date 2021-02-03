@@ -1,57 +1,22 @@
-var SAMPLE_TYPE_STEM = "Stem";
-var SAMPLE_TYPE_LEAF = "Leaf";
-
-var sampleType;
-
 macro "OSOV Image Difference Auto" {
-	getSettings();
 
-	setBatchMode(true);
-
-	originalImage = getImageID();
-
-	Stack.getDimensions(ww, hh, channels, slices, frames);
-
-	run("Make Substack..."," slices=1-"+ slices-1);
-	imgID1 = getImageID();
-
-	selectImage(originalImage);
-
-	run("Make Substack...", " slices=2-"+ slices);
-	imgID2 = getImageID();
-
-	if(sampleType == SAMPLE_TYPE_STEM) {
-		imageCalculator("Subtract create stack", imgID2, imgID1);
-	} else {
-		imageCalculator("Subtract create stack", imgID1, imgID2);
-	}
-	selectImage(imgID1);
-	close();
-
-	selectImage(imgID2);
-	close();
-
-	setBatchMode("exit and display");
-
-
+    run("OSOV Image Difference v2", "Leaf");
     run("Duplicate...", "duplicate");
-	run("Convert to Mask", "method=Moments background=Dark");
-    //run("Synchronize Windows");
-	run("Threshold...");
+    run("Convert to Mask");
 
+    //run("Synchronize Windows"); à garder ??
+    //run("Threshold..."); à garder ??
     //while(!isKeyDown("space")){}
     
-    run("Remove Outliers...", "add stack");
-	run("Tiff...");
-	run("Set Measurements...", "area limit redirect=None decimal=3");
-	run("Set Scale...", "distance=1 known=1 pixel=1 unit=cm");
-	run("Threshold...");	//setAutoThreshold("Default dark");
+    run("Remove Outliers...");
+    run("Tiff...");
+    run("Set Measurements...", "area limit redirect=None decimal=3");
+    run("Set Scale...", "distance=1 known=1 pixel=1 unit=cm");
+    run("Threshold...");
 
-	run("OSOV Measure Stack"); 
-	//saveAs("Results");
+    run("OSOV Measure Stack");
 
-	FileCCValuesPath=File.openDialog("Select the file containing the coordinates");
-	//open(FileCCValuesPath);
+    FileCCValuesPath=File.openDialog("Select the file containing the coordinates");
 
 	area = newArray(nResults);
     sum = newArray(nResults);
@@ -72,8 +37,6 @@ macro "OSOV Image Difference Auto" {
          run("Close" );
 	}
 	importResult(FileCCValuesPath);
-	//run("Results...", FileCCValuesPath);
-	//updateResults();
 	
 	time = newArray(nResults);
 	for (i=0; i < nResults; i++) {
@@ -83,17 +46,9 @@ macro "OSOV Image Difference Auto" {
 
 	Array.show(sum);
 	Array.show(time);
-    
-
-
-
 
 }
 
-
-function getSettings() {
-	sampleType = SAMPLE_TYPE_LEAF;
-}
 
 function importResult(path) {
 	 requires("1.35r");
