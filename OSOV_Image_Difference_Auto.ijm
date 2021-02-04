@@ -1,11 +1,44 @@
-macro "OSOV Image Difference Auto" {
+var SAMPLE_TYPE_STEM = "Stem";
+var SAMPLE_TYPE_LEAF = "Leaf";
 
-    run("OSOV Image Difference v2", "Leaf");
-    run("Convert to Mask");
+var sampleType;
+
+macro "OSOV Image Difference Auto" {
+	getSettings();
+
+	setBatchMode(true);
+
+	originalImage = getImageID();
+
+	Stack.getDimensions(ww, hh, channels, slices, frames);
+
+	run("Make Substack..."," slices=1-"+ slices-1);
+	imgID1 = getImageID();
+
+	selectImage(originalImage);
+
+	run("Make Substack...", " slices=2-"+ slices);
+	imgID2 = getImageID();
+
+	if(sampleType == SAMPLE_TYPE_STEM) {
+		imageCalculator("Subtract create stack", imgID2, imgID1);
+	} else {
+		imageCalculator("Subtract create stack", imgID1, imgID2);
+	}
+	selectImage(imgID1);
+	close();
+
+	selectImage(imgID2);
+	close();
+
+	setBatchMode("exit and display");
+
+	run("Convert to Mask");
 
 	//while(!isKeyDown("space")){}
-  run("Bilateral Filter");
-run("Invert", "stack");
+
+    run("Bilateral Filter");
+    run("Invert", "stack");
     run("Remove Outliers...");
     run("Tiff...");
     run("Set Measurements...", "area limit redirect=None decimal=3");
@@ -14,7 +47,7 @@ run("Invert", "stack");
 	//while(!isKeyDown("space")){}
     run("OSOV Measure Stack");
 
-  FileCCValuesPath=File.openDialog("Select the csv file...");
+  	FileCCValuesPath=File.openDialog("Select the csv file...");
 
 	area = newArray(nResults);
     sum = newArray(nResults);
@@ -106,4 +139,11 @@ function importResult(path) {
            setResult(labels[j],i-1,items[j]);
      }
      updateResults();
+}
+
+
+
+
+function getSettings() {
+	sampleType = SAMPLE_TYPE_LEAF;
 }
