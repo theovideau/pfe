@@ -5,15 +5,17 @@ macro "OSOV Image Difference Auto" {
     run("Convert to Mask");
 
     //run("Synchronize Windows"); à garder ??
-    //run("Threshold..."); à garder ??
-    //while(!isKeyDown("space")){}
+    run("Threshold..."); //à garder ??
+    
+	while(!isKeyDown("space")){}
+
     
     run("Remove Outliers...");
     run("Tiff...");
     run("Set Measurements...", "area limit redirect=None decimal=3");
     run("Set Scale...", "distance=1 known=1 pixel=1 unit=cm");
     run("Threshold...");
-
+	while(!isKeyDown("space")){}
     run("OSOV Measure Stack");
 
     FileCCValuesPath=File.openDialog("Select the file containing the coordinates");
@@ -44,8 +46,45 @@ macro "OSOV Image Difference Auto" {
 		time[i] = xValue;
 	}	
 
+	phi = newArray(nResults);
+	for (i=0; i < nResults; i++) {
+		xValue = getResult("phi",i);
+		phi[i] = xValue;
+	}	
+
 	Array.show(sum);
 	Array.show(time);
+	Array.show(phi);
+
+	Plot.create("Plot of Results", "time", "phi");
+	Plot.add("Circle", time, phi);
+	Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
+	Fit.doFit("Straight Line", time, phi);
+	slope = Fit.p(0);
+	intercept = Fit.p(1);
+	Fit.plot();
+
+	tab = newArray(nResults);
+	for (i=0; i < nResults; i++) {
+		tab[i] = phi[i] * slope + intercept;
+	}	
+	Array.show(tab);
+
+	tab2 = newArray(nResults);
+	for (i=0; i < nResults; i++) {
+		tab2[i] = sum[i] / sum[nResults-1] * 100;
+	}	
+	Array.show(tab2);
+
+	phi2 = newArray(nResults);
+	for (i=0; i < nResults; i++) {
+		phi2[i] = -phi[i];
+	}	
+	Array.show(phi2);
+
+	Plot.create("Plot of Results", "tab2", "phi2");
+	Plot.add("Circle", phi2, tab2);
+	Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
 
 }
 
