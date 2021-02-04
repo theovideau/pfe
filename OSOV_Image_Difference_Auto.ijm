@@ -1,7 +1,6 @@
 macro "OSOV Image Difference Auto" {
 
     run("OSOV Image Difference v2", "Leaf");
-    run("Duplicate...", "duplicate");
     run("Convert to Mask");
 
 	//while(!isKeyDown("space")){}
@@ -15,7 +14,7 @@ macro "OSOV Image Difference Auto" {
 	//while(!isKeyDown("space")){}
     run("OSOV Measure Stack");
 
-    FileCCValuesPath=File.openDialog("Select the file containing the coordinates");
+  FileCCValuesPath=File.openDialog("Select the csv file...");
 
 	area = newArray(nResults);
     sum = newArray(nResults);
