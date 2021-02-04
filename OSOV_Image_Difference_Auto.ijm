@@ -4,8 +4,8 @@ macro "OSOV Image Difference Auto" {
     run("Convert to Mask");
 
 	//while(!isKeyDown("space")){}
-
-
+  run("Bilateral Filter");
+run("Invert", "stack");
     run("Remove Outliers...");
     run("Tiff...");
     run("Set Measurements...", "area limit redirect=None decimal=3");
