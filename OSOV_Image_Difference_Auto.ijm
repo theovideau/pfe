@@ -35,10 +35,9 @@ macro "OSOV Image Difference Auto" {
 
 	run("Convert to Mask");
 
-	//while(!isKeyDown("space")){}
+	while(!isKeyDown("space")){}
 
-		run("Bilateral Filter");
-		run("Invert", "stack");
+
     run("Remove Outliers...");
     run("Tiff...");
     run("Set Measurements...", "area limit redirect=None decimal=3");
@@ -69,7 +68,7 @@ macro "OSOV Image Difference Auto" {
 	}
 	importResult(FileCCValuesPath);
 
-	time = newArray(nResults);
+	time = newArray(nResults); 
     Array.fill(time, 0);
 	for (i=1; i < nResults; i++) {
 		//xValue = getResult("date_hour",i);
