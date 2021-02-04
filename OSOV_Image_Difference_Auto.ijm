@@ -27,6 +27,13 @@ macro "OSOV Image Difference Auto" {
 	}
 	selectImage(imgID1);
 	close();
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 5e65517c298a1d0a9ea13c092a5fedfd535934a9
 
 	selectImage(imgID2);
 	close();
@@ -146,4 +153,8 @@ function importResult(path) {
 
 function getSettings() {
 	sampleType = SAMPLE_TYPE_LEAF;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 5e65517c298a1d0a9ea13c092a5fedfd535934a9
