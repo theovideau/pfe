@@ -1,9 +1,41 @@
+var SAMPLE_TYPE_STEM = "Stem";
+var SAMPLE_TYPE_LEAF = "Leaf";
+
+var sampleType;
+
 macro "OSOV Image Difference Auto" {
+	getSettings();
 
-    run("OSOV Image Difference v2", "Leaf");
-    run("Convert to Mask");
+	setBatchMode(true);
 
-	//while(!isKeyDown("space")){}
+	originalImage = getImageID();
+
+	Stack.getDimensions(ww, hh, channels, slices, frames);
+
+	run("Make Substack..."," slices=1-"+ slices-1);
+	imgID1 = getImageID();
+
+	selectImage(originalImage);
+
+	run("Make Substack...", " slices=2-"+ slices);
+	imgID2 = getImageID();
+
+	if(sampleType == SAMPLE_TYPE_STEM) {
+		imageCalculator("Subtract create stack", imgID2, imgID1);
+	} else {
+		imageCalculator("Subtract create stack", imgID1, imgID2);
+	}
+	selectImage(imgID1);
+	close();
+
+	selectImage(imgID2);
+	close();
+
+	setBatchMode("exit and display");
+
+	run("Convert to Mask");
+
+	while(!isKeyDown("space")){}
 
 
     run("Remove Outliers...");
@@ -14,7 +46,7 @@ macro "OSOV Image Difference Auto" {
 	//while(!isKeyDown("space")){}
     run("OSOV Measure Stack");
 
-  FileCCValuesPath=File.openDialog("Select the csv file...");
+  	FileCCValuesPath=File.openDialog("Select the csv file...");
 
 	area = newArray(nResults);
     sum = newArray(nResults);
@@ -106,4 +138,11 @@ function importResult(path) {
            setResult(labels[j],i-1,items[j]);
      }
      updateResults();
+}
+
+
+
+
+function getSettings() {
+	sampleType = SAMPLE_TYPE_LEAF;
 }
