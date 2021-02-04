@@ -27,13 +27,6 @@ macro "OSOV Image Difference Auto" {
 	}
 	selectImage(imgID1);
 	close();
-<<<<<<< HEAD
-=======
-
-
-
-
->>>>>>> 5e65517c298a1d0a9ea13c092a5fedfd535934a9
 
 	selectImage(imgID2);
 	close();
@@ -44,8 +37,8 @@ macro "OSOV Image Difference Auto" {
 
 	//while(!isKeyDown("space")){}
 
-    run("Bilateral Filter");
-    run("Invert", "stack");
+		run("Bilateral Filter");
+		run("Invert", "stack");
     run("Remove Outliers...");
     run("Tiff...");
     run("Set Measurements...", "area limit redirect=None decimal=3");
@@ -77,9 +70,10 @@ macro "OSOV Image Difference Auto" {
 	importResult(FileCCValuesPath);
 
 	time = newArray(nResults);
-	for (i=0; i < nResults; i++) {
-		xValue = getResult("date_hour",i);
-		time[i] = xValue;
+    Array.fill(time, 0);
+	for (i=1; i < nResults; i++) {
+		//xValue = getResult("date_hour",i);
+		time[i] += 5*i;
 	}
 
 	phi = newArray(nResults);
@@ -92,20 +86,24 @@ macro "OSOV Image Difference Auto" {
 	Plot.create("Plot of Results", "time", "phi");
 	Plot.add("Circle", time, phi);
 	Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
-	Fit.doFit("Straight Line", time, phi);
-	slope = Fit.p(0);
-	intercept = Fit.p(1);
+
+	Fit.doFit(2, time, phi);
+	a = Fit.p(0);
+	b = Fit.p(1);
+    c = Fit.p(2);
+    d = Fit.p(3);
 	Fit.plot();
 
-	tab = newArray(nResults);
+	PH = newArray(nResults);
 	for (i=0; i < nResults; i++) {
-		tab[i] = phi[i] * slope + intercept;
+        t = time[i];
+		PH[i] = (a + t*b + t*t*c + t*t*t*d);
 	}
 
 
-	tab2 = newArray(nResults);
+	pourcentageTotal = newArray(nResults);
 	for (i=0; i < nResults; i++) {
-		tab2[i] = sum[i] / sum[nResults-1] * 100;
+		pourcentageTotal[i] = sum[i] / sum[nResults-1] * 100;
 	}
 
 
@@ -114,8 +112,10 @@ macro "OSOV Image Difference Auto" {
 		phi2[i] = -phi[i];
 	}
 
-	Plot.create("Plot of Results", "tab2", "phi2");
-	Plot.add("Circle", phi2, tab2);
+    Fit.doFit(2, PH, pourcentageTotal);
+    Fit.plot();
+	Plot.create("Plot of Results", "Potentiel Hydrique", "% d'embolie");
+	Plot.add("Circle", PH, pourcentageTotal);
 	Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
 
 }
@@ -153,8 +153,4 @@ function importResult(path) {
 
 function getSettings() {
 	sampleType = SAMPLE_TYPE_LEAF;
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 5e65517c298a1d0a9ea13c092a5fedfd535934a9
