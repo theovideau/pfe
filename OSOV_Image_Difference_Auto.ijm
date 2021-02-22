@@ -111,8 +111,6 @@ macro "OSOV Image Difference Auto" {
 		phi2[i] = -phi[i];
 	}
 
-    Fit.doFit(2, PH, pourcentageTotal);
-    Fit.plot();
 	Plot.create("Plot of Results", "Potentiel Hydrique", "% d'embolie");
 	Plot.add("Circle", PH, pourcentageTotal);
 	Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
