@@ -22,7 +22,7 @@ The following files completes the OSOV plugin and needs it to work.
 
 ## Instructions
 ---
-1. Import the image sequence and make sure that the `Convert to 8-bit Grayscale` box is checked. 
+1. Import the image sequence `File > Import > Image Sequence` and make sure that the `Convert to 8-bit Grayscale` box is checked. 
 ![Fiji with OSOV Toolbox](images/8bits.png)
 
 2. Click on the green box and run the `Auto Embolism Detection`.
