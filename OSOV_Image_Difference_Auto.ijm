@@ -3,7 +3,10 @@ var SAMPLE_TYPE_LEAF = "Leaf";
 
 var sampleType;
 
-macro "OSOV Image Difference Auto" {
+macro "OSOV Auto Embolism Detection" {
+	
+	// Macro Image Difference V2 
+	// ---------------------------
 	getSettings();
 
 	setBatchMode(true);
@@ -32,22 +35,36 @@ macro "OSOV Image Difference Auto" {
 	close();
 
 	setBatchMode("exit and display");
+	// ---------------------------
 
+	// Convert Stack to Binary
 	run("Convert to Mask");
 
+	// Waiting for Space key press
 	while(!isKeyDown("space")){}
 
-
+	// Remove Outliers
     run("Remove Outliers...");
+
+	// Waiting for Space key press
+	while(!isKeyDown("space")){}
+
+	// Save As TIFF file format
     run("Tiff...");
+
+	// Set Measurements with parameters
     run("Set Measurements...", "area limit redirect=None decimal=3");
+
+	// Set Scale with parameters 1:1
     run("Set Scale...", "distance=1 known=1 pixel=1 unit=cm");
 
-	//while(!isKeyDown("space")){}
+	// Run Measurements from Stack
     run("OSOV Measure Stack");
 
+	// Window dialog for select the Bilan csv file
   	FileCCValuesPath=File.openDialog("Select the csv file...");
 
+	// Areas and cumulative area total array
 	area = newArray(nResults);
     sum = newArray(nResults);
     sum[0] = 0;
@@ -59,33 +76,39 @@ macro "OSOV Image Difference Auto" {
 		}else{
 			sum[i] = sum[i-1] + xValue;
 		}
-
     }
+
+	// Clear results window 
 	run("Clear Results");
 	if (isOpen("Results")) {
-         selectWindow("Results");
-         run("Close" );
+        selectWindow("Results");
+        run("Close");
 	}
+
+	// Import "Bilan" with water potential csv file
 	importResult(FileCCValuesPath);
 
+	// Get time from csv file (here )
 	time = newArray(nResults); 
     Array.fill(time, 0);
 	for (i=1; i < nResults; i++) {
-		//xValue = getResult("date_hour",i);
+		//xValue = getResult("date_hour",i); // time format from csv file is invalid and does not work
 		time[i] += 5*i;
 	}
 
+	// Get water potential (phi) from csv file
 	phi = newArray(nResults);
 	for (i=0; i < nResults; i++) {
 		xValue = getResult("phi",i);
 		phi[i] = xValue;
 	}
 
-
-	Plot.create("Plot of Results", "time", "phi");
+	// Water potential versus time curve
+	Plot.create("Courbe du potentiel hydrique en fonction du temps", "time", "phi");
 	Plot.add("Circle", time, phi);
 	Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
 
+	// 2nd order linear regression
 	Fit.doFit(2, time, phi);
 	a = Fit.p(0);
 	b = Fit.p(1);
@@ -93,31 +116,32 @@ macro "OSOV Image Difference Auto" {
     d = Fit.p(3);
 	Fit.plot();
 
+	// Water potential from linear regression : solve a+bx+cx^2+dx^3
 	PH = newArray(nResults);
 	for (i=0; i < nResults; i++) {
         t = time[i];
 		PH[i] = (a + t*b + t*t*c + t*t*t*d);
 	}
 
-
-	pourcentageTotal = newArray(nResults);
+	// Calculation of the cumulative area
+	cumulativeArea = newArray(nResults);
 	for (i=0; i < nResults; i++) {
-		pourcentageTotal[i] = sum[i] / sum[nResults-1] * 100;
+		cumulativeArea[i] = sum[i] / sum[nResults-1] * 100;
 	}
 
-
+	// Opposite of water potential
 	phi2 = newArray(nResults);
 	for (i=0; i < nResults; i++) {
 		phi2[i] = -phi[i];
 	}
 
-	Plot.create("Plot of Results", "Potentiel Hydrique", "% d'embolie");
-	Plot.add("Circle", PH, pourcentageTotal);
+	// Final curve : cavitation vulnerability curve
+	Plot.create("Courbe de vulnérabilité à la cavitation", "Potentiel Hydrique", "Pourcentage d'embolie");
+	Plot.add("Circle", PH, cumulativeArea);
 	Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
-
 }
 
-
+// Import results fonction from csv file
 function importResult(path) {
 	 requires("1.35r");
      lineseparator = "\n";
@@ -144,9 +168,6 @@ function importResult(path) {
      }
      updateResults();
 }
-
-
-
 
 function getSettings() {
 	sampleType = SAMPLE_TYPE_LEAF;
