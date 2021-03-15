@@ -15,7 +15,7 @@ The following files completes the OSOV plugin and needs it to work.
 
 3. Then, put the file [OSOV_Auto_Embolism_Detection.ijm](/OSOV_Auto_Embolism_Detection.ijm) into `Fiji/plugins/OSOV` application folder.
 
-4. Put the [OSOVToolbox.ijm](/OSOVToolbox.ijm) file into `Fiji/macros/toolsets` folder.
+4. Put the [OSOV Toolbox.ijm](/OSOV Toolbox.ijm) file into `Fiji/macros/toolsets` folder.
 
 5. Finally, restart `Fiji` load the `OSOV Toolbox` by clicking on the two rafters and you will find the `Auto Embolism Detection` plugin into the `OSOV Toolbox` by clicking on the green box.
 ![Fiji with OSOV Toolbox](images/fiji.png)
