@@ -13,7 +13,7 @@ macro "OSOV Auto Embolism Detection" {
 
 	originalImage = getImageID();
 
-	Stack.getDimensions(ww, hh, channels, slices, frames);
+	Stack.getDimensions(width, height, channels, slices, frames);
 
 	run("Make Substack..."," slices=1-"+ slices-1);
 	imgID1 = getImageID();
@@ -33,17 +33,27 @@ macro "OSOV Auto Embolism Detection" {
 
 	selectImage(imgID2);
 	close();
+	// ---------------------------
 
+
+	// Delete images that will falsify the final result
+	deleteUnusableSlices();
+	
 	setBatchMode("exit and display");
 	// ---------------------------
 
 	// Convert Stack to Binary
+	// ---------------------------
+	setOption("BlackBackground", false);
 	run("Convert to Mask");
+
+	// Remove black spots
+	//removeBlackSpots(getTitle(), 10);
 
 	// Waiting for Space key press
 	while(!isKeyDown("space")){}
 
-	// Remove Outliers
+	// Remove noise
     run("Remove Outliers...");
 
 	// Waiting for Space key press
@@ -141,7 +151,62 @@ macro "OSOV Auto Embolism Detection" {
 	Plot.setStyle(0, "blue,#a0a0ff,1.0,Circle");
 }
 
+// Deletes the slices that falsify the 
+function deleteUnusableSlices(){
+	deletedSlices = 0;
+	maxPixelsMean = 5;
+	for (sliceNumber = 1; sliceNumber < slices - deletedSlices; sliceNumber++) {
+		setSlice(sliceNumber);
+		getStatistics(area, mean, min, max, std, histogram);
+		if (mean > maxPixelsMean){
+			run("Delete Slice");
+			deletedSlices++;
+			sliceNumber--;
+		}
+	}
+}
+
+// Remove the black spots on a binary stack
+// stackTitle : title of the binary stack where we want to remove the black spots
+// squareLength : length of the square to remove the black spots
+function removeBlackSpots(stackTitle,squareLength){
+	newSlicesNumber = nSlices();
+	MaxWhitePixels = squareLength;
+	for (sliceNumber = 1; sliceNumber <= newSlicesNumber; sliceNumber++){
+		selectImage(stackTitle);
+		setSlice(sliceNumber);
+		for (x = 0; x < width - squareLength; x = x+squareLength){
+			for (y = 0; y < height - squareLength ; y = y+squareLength){
+				whitePixels = 0;
+				for (squareX = x; squareX < x + squareLength; squareX++){
+					for (squareY = y; squareX < y + squareLength; squareY++){
+
+						if (getPixel(squareX,squareY) == 0){
+							whitePixels++;
+						}
+						if (whitePixels >= MaxWhitePixels){
+							break;
+						}
+					}
+					if (whitePixels >= MaxWhitePixels){
+						break;
+					}
+				}
+				if (whitePixels < MaxWhitePixels){
+					for (squareX = x; squareX < x + squareLength; squareX++){
+						for (squareY = y; squareX < y + squareLength; squareY++){
+							setPixel(squareX,squareY,0);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
 // Import results fonction from csv file
+// path : path of the csv file
 function importResult(path) {
 	 requires("1.35r");
      lineseparator = "\n";
