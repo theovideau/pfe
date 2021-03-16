@@ -13,15 +13,25 @@ The following files completes the OSOV plugin and needs it to work.
 
 2. Then you need to install the `OSOV` plugin [here](https://github.com/OpenSourceOV/imagej-scripts/archive/master.zip).
 
-3. Then, put the file [OSOV_Auto_Embolism_Detection.ijm](/OSOV_Auto_Embolism_Detection.ijm) into `Fiji/plugins/OSOV` application folder.
+    In the `Fiji` directory...
 
-4. Put the [OSOVToolbox.ijm](/OSOVToolbox.ijm) file into `Fiji/macros/toolsets` folder.
+    * Put the `OSOV` folder in the plugins directory (e.g. `c:\Fiji\plugins\OSOV`)
+    * Put the `OSOV Toolbox.ijm` in the `macros/toolsets` folder (e.g. `c:\Fiji\macros\toolsets\OSOV Toolbox.ijm`)
 
-5. Finally, restart `Fiji` load the `OSOV Toolbox` by clicking on the two rafters and you will find the `Auto Embolism Detection` plugin into the `OSOV Toolbox` by clicking on the green box.
+    On macOS systems the easiest way to get to the `Fiji` application folder is to go to `Applications` in `Finder` (usually accessible from the Favorites list on the left panel) and right-click the `Fiji.app` and click `Show Package Contents`.
+
+3. Then, put the first file [OSOV_Auto_Embolism_Detection.ijm](/OSOV_Auto_Embolism_Detection.ijm) into `Fiji/plugins/OSOV` application folder.
+
+4. And put the second file [OSOV_Auto_Vulnerability_Curve.ijm](/OSOV_Auto_Vulnerability_Curve.ijm) into `Fiji/plugins/OSOV` application folder.
+
+4. Finally, restart `Fiji` load the `OSOV Toolbox` by clicking on the two rafters (`>>`) and you will find the `Auto Embolism Detection` and `Auto Vulnerability Curve` plugins into the `OSOV Toolbox` by clicking on the green box.
 ![Fiji with OSOV Toolbox](images/fiji.png)
+![Fiji with OSOV Toolbox](images/menu.png)
 
 ## Instructions
 ---
+### Auto Embolism Detection
+
 1. Import the image sequence `File > Import > Image Sequence` and make sure that the `Convert to 8-bit Grayscale` box is checked. 
 ![Fiji with OSOV Toolbox](images/8bits.png)
 
@@ -50,20 +60,23 @@ The following files completes the OSOV plugin and needs it to work.
 
 7. You can view the result by scrolling through the images in the stack. If the noise reduction is not effective enough, you can try additional operations such as:
 
-    - Morphological operators: `Process > Morphology > Gray Morphology` and choose an opening operator.
-    - Minimum Filter: `Process > Filters > Minimum`.
-    - Median Filter: `Process > Filters > Median`.
-    - Gaussian Blur: `Process > Filters > Gaussian Blur` on the basic images.
+    - **Morphological operators:** `Process > Morphology > Gray Morphology` and choose an opening operator.
+    - **Minimum Filter:** `Process > Filters > Minimum`.
+    - **Median Filter:** `Process > Filters > Median`.
+    - **Gaussian Blur:** `Process > Filters > Gaussian Blur` on the basic images.
     - ...
 
 8. After processing on the image stack, you can save it as `TIFF` format and start measurements.
 ![Fiji with OSOV Toolbox](images/saveas.png)
 
-9. After running measurements, you have to import the `csv` file where water potentials where the water potentials have been measured and are present in the `phi` column of the `csv` file (Bilan).
+### Auto Vulnerability Curve
+9. After running measurements, you have to start measurements to calculate the vulnerability curve. To do that, click on the green box (`OSOV Toolbox`) and run the `Auto Embolism Detection` plugin.
+
+10. Then, you have to import the `csv` file where water potentials have been measured and are present in the `WP_MPa` column of the `csv` file (Bilan). Make sure that the column name is `WP_MPa` and that the data in each row of the `csv` file is separated by a semicolon (`;`).
 ![Fiji with OSOV Toolbox](images/importcsv.png)
 
-10. The final curve representing the cavitation vulnerability curve is calculated and displayed on the screen.
-![Fiji with OSOV Toolbox](images/finalcurve.png)
+11. The final curve representing the cavitation vulnerability curve is calculated and displayed on the screen.
+![Fiji with OSOV Toolbox](images/curvevulnerability.png)
 
 ## References
 ---
@@ -84,7 +97,7 @@ Researchers:
 
 Students:
 ---
-- Johan DAVID <johan.david@etu.u-bordeaux.fr>
-- Léo SOUVAY <leo.souvay@etu.u-bordeaux.fr>
-- Jon Stark <jon.stark@u-bordeaux.fr>
-- Théo Videau <theo.videau@etu.u-bordeaux.fr>
+- Johan DAVID (Université de Bordeaux) <johan.david@etu.u-bordeaux.fr>
+- Léo SOUVAY (Université de Bordeaux) <leo.souvay@etu.u-bordeaux.fr>
+- Jon STARK (Université de Bordeaux) <jon.stark@u-bordeaux.fr>
+- Théo VIDEAU (Université de Bordeaux) <theo.videau@etu.u-bordeaux.fr>
