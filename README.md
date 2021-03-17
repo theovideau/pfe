@@ -50,11 +50,10 @@ The following files completes the OSOV plugin and needs it to work.
     When you found the most efficient algorithms, click on `Apply`.
 
     You will now have a `Convert Stack To Binary` window, where you need to put the method that you chose previously.
-
-![Fiji with OSOV Toolbox](images/convertstack.png)
-
+    ![Fiji with OSOV Toolbox](images/convertstack.png)
     Make sure that the `Background` mode is on `Dark` and run `OK` and close the `Threshold` window after the conversion was done. 
     (If you a see black & red images after closing the `Threshold` window, they will become black & white again in step 5).
+
     
 4. You can view the result by scrolling through the images in the stack.
 
