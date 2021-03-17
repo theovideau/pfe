@@ -17,6 +17,7 @@ requires("1.50a");
 
 	var filemenu = newMenu("OSOV Menu Tool", newArray(
 		"Auto Embolism Detection",
+		"Auto Vulnerability Curve",
 		"Colour Slices",
 		"Image Difference",
 		"Image Difference v2",
@@ -42,6 +43,7 @@ requires("1.50a");
 		menuCmd = getArgument();
 		if (menuCmd!="-") {
 			if (menuCmd=="Auto Embolism Detection") { run("OSOV Auto Embolism Detection"); }
+			else if (menuCmd=="Auto Vulnerability Curve") { run("OSOV Auto Vulnerability Curve"); }
 			else if (menuCmd=="Colour Slices") { run("OSOV Colour Slices"); }
 			else if (menuCmd=="Image Difference") { run("OSOV Image Difference"); }
 			else if (menuCmd=="Image Difference v2") { run("OSOV Image Difference v2"); }
