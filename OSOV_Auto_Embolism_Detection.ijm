@@ -38,7 +38,7 @@ macro "OSOV Auto Embolism Detection" {
 
 	// Waiting for Space key press
 	while(!isKeyDown("space")){}
-
+	setThreshold(255,255,"black & white");
 	// Remove noise
     run("Remove Outliers...");
 
@@ -48,7 +48,6 @@ macro "OSOV Auto Embolism Detection" {
 
 	// Save As TIFF file format
     run("Tiff...");
-	run("OSOV Auto Vulnerability Curve");
 }
 
 

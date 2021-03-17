@@ -37,18 +37,25 @@ The following files completes the OSOV plugin and needs it to work.
 
 2. Click on the green box and run the `Auto Embolism Detection`.
 
-3. You have to choose the better threshold algorithm in the `Convert Stack to Binary` window you want to use depending on the quality of the acquisition.
-![Fiji with OSOV Toolbox](images/convertstack.png)
+3. You have to choose the better threshold algorithm in the `Threshold` window you want to use depending on the quality of the acquisition. You can scroll through the images.
+![Fiji with OSOV Toolbox](images/threshold.png)
 
-    We have selected some efficient thresholding algorithms on the proposed datasets:
+    We have selected some efficient thresholding methods on the proposed datasets:
 
     - `IsoData`
     - `IJ_IsoData`
     - `Moments`
     - `Li`
 
-    Make sure that the `Background` mode is on `Dark` and run `OK`.
+    When you found the most efficient algorithms, click on `Apply`.
 
+    You will now have a `Convert Stack To Binary` window, where you need to put the method that you chose previously.
+
+![Fiji with OSOV Toolbox](images/convertstack.png)
+
+    Make sure that the `Background` mode is on `Dark` and run `OK` and close the `Threshold` window after the conversion was done. 
+    (If you a see black & red images after closing the `Threshold` window, they will become black & white again in step 5).
+    
 4. You can view the result by scrolling through the images in the stack.
 
 5. To go to the next step, press the `space bar` of your keyboard.
@@ -70,12 +77,15 @@ The following files completes the OSOV plugin and needs it to work.
 ![Fiji with OSOV Toolbox](images/saveas.png)
 
 ### Auto Vulnerability Curve
-9. After running measurements, you have to start measurements to calculate the vulnerability curve. To do that, click on the green box (`OSOV Toolbox`) and run the `Auto Embolism Detection` plugin.
+9. After image processing, you have to start measurements to calculate the vulnerability curve. To do that, click on the green box (`OSOV Toolbox`) and run the `Auto Vulnerability Curve` plugin.
 
-10. Then, you have to import the `csv` file where water potentials have been measured and are present in the `WP_MPa` column of the `csv` file (Bilan). Make sure that the column name is `WP_MPa` and that the data in each row of the `csv` file is separated by a semicolon (`;`).
+10. When the measurements are done, you will have the possibility to save the measurements in a `csv` file.
+![Fiji with OSOV Toolbox](images/results.png)
+
+11. Then, you have to import the `csv` file where water potentials have been measured and are present in the `WP_MPa` column of the `csv` file (Bilan). Make sure that the column name is `WP_MPa` and that the data in each row of the `csv` file is separated by a semicolon (`;`).
 ![Fiji with OSOV Toolbox](images/importcsv.png)
 
-11. The final curve representing the cavitation vulnerability curve is calculated and displayed on the screen.
+12. The final curve representing the cavitation vulnerability curve is calculated and displayed on the screen.
 ![Fiji with OSOV Toolbox](images/curvevulnerability.png)
 
 ## References
